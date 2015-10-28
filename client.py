@@ -13,8 +13,11 @@ import sys
 IP = sys.argv[1]
 PUERTO = int(sys.argv[2])
 LINEA = sys.argv[3:]
+exp_value = sys.argv[-1]
 if LINEA[0] == "register":
-    mensaje = "REGISTER sip:" + LINEA[1] + " SIP/2.0\r\n\r\n"
+    mensaje = "REGISTER sip:" + LINEA[1] + " SIP/2.0\r\n"
+    mensaje = mensaje + "Expires: " + exp_value + "\r\n\r\n"
+    print(mensaje)
 else:
     mensaje = " ".join(LINEA)
 
