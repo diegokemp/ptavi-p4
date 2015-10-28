@@ -1,23 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Clase (y programa principal) para un servidor de eco en UDP simple
-"""
-
 import socketserver
 import sys
 
 
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
-    """
-    Echo server class
-    """
     dicc = {}
 
     def handle(self):
-        # Escribe dirección y puerto del cliente (de tupla client_address)
-        #self.wfile.write(b"Hemos recibido tu peticion")
-        #print(self.client_address)
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
@@ -25,19 +15,17 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             lineutf = lineutf.split(" sip:")
             if lineutf[0] == "REGISTER":
                 address = lineutf[1].split(" ")
-                exp_value = address[-1].split("\r\n")#expire
+                exp_value = address[-1].split("\r\n")
                 exp_value = exp_value[0]
                 address = address[0]
-                print(exp_value)
+                #print(exp_value)
                 if exp_value == "0":
-                    #borrar cliente
-                    del self.dicc[address]
-                    print("borrado")
-                    self.wfile.write(b"borado")
+                    del self.dicc[address]#BORRAR
+                    self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
+                    print(self.dicc)
                 else:
-                    #print(self.client_address[0])
-                    self.dicc[address] = [self.client_address[0]]
-                    #print(self.dicc)
+                    self.dicc[address] = [self.client_address[0]]#AÑADIR
+                    print(self.dicc)
                     self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
 
 
