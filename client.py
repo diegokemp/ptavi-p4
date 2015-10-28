@@ -17,7 +17,6 @@ exp_value = sys.argv[-1]
 if LINEA[0] == "register":
     mensaje = "REGISTER sip:" + LINEA[1] + " SIP/2.0\r\n"
     mensaje = mensaje + "Expires: " + exp_value + "\r\n\r\n"
-    print(mensaje)
 else:
     mensaje = " ".join(LINEA)
 
@@ -26,11 +25,11 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((IP, PUERTO))
 
-print("Enviando: " + mensaje)
+print("Enviando: \r\n" + mensaje)
 my_socket.send(bytes(mensaje, 'utf-8') + b'\r\n')
 data = my_socket.recv(1024)
 
-print('Recibido -- ', data.decode('utf-8'))
+print('Recibido: \r\n' + data.decode('utf-8'))
 print("Terminando socket...")
 
 # Cerramos todo
