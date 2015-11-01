@@ -13,7 +13,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         try:
             archivo2 = open("registered.json", "r")
             self.dicc = json.load(archivo2)
-            print(self.dicc)
+            #print(self.dicc)
         except FileNotFoundError:
             print("No se encontro dicho archivo...")
 
@@ -43,10 +43,13 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 exp_value = exp_value[0]
                 address = address[0]
                 if exp_value == "0":
-                    del self.dicc[address]
+                    try:
+                        del self.dicc[address]
+                        print("borrado")
+                    except KeyError:
+                        print("No existe ese usuario")
                     self.register2json("registered.json")
                     self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
-                    print(self.dicc)
                 else:
                     expires = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + float(exp_value)))
                     self.dicc[address] = [self.client_address[0], expires]
@@ -61,9 +64,6 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 break
 
 if __name__ == "__main__":
-    # Creamos servidor de eco y escuchamos
-    #launch = SIPRegisterHandler()
-    #launch.json2registered()
     serv = socketserver.UDPServer(('', int(sys.argv[1])), SIPRegisterHandler)
     print("Lanzando servidor UDP de eco...")
     serv.serve_forever()
