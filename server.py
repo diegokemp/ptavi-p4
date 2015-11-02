@@ -13,6 +13,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         try:
             archivo2 = open("registered.json", "r")
             self.dicc = json.load(archivo2)
+            #print("--Cargado de el json--")
             #print(self.dicc)
         except FileNotFoundError:
             print("No se encontro dicho archivo...")
@@ -23,6 +24,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if (dicc2[key][1]) < actual:
                 del self.dicc[key]
                 #print(self.dicc)
+                print("--Diccionario actualizado--")
 
     def register2json(self, nombre):
         archivo = open(nombre, "w")
@@ -45,10 +47,10 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 if exp_value == "0":
                     try:
                         del self.dicc[address]
-                        print("borrado")
+                        print("-El usuario " + address + " se ha dado de baja-")
                         print(self.dicc)
                     except KeyError:
-                        print("No existe ese usuario")
+                        print("--No existe ese usuario--")
                         print(self.dicc)
                     self.register2json("registered.json")
                     self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
