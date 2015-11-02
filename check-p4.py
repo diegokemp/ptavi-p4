@@ -23,13 +23,14 @@ repo_git = "http://github.com/" + sys.argv[1] + "/ptavi-p4"
 python_files = [
      'client.py',
      'server.py',
-    ]
+     ]
 
 files = ['README.md',
          'LICENSE',
          '.gitignore',
          'check-p4.py',
-         '.git'
+         '.git',
+         'register.libpcap'
          ]
 
 aleatorio = str(int(random.random() * 1000000))
