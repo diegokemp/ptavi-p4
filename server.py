@@ -30,8 +30,8 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     def handle(self):
         self.json2registered()
-        current = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        self.caduca(current)
+        curr = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        self.caduca(curr)
         while 1:
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
@@ -46,24 +46,26 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                     try:
                         del self.dicc[address]
                         print("borrado")
+                        print(self.dicc)
                     except KeyError:
                         print("No existe ese usuario")
+                        print(self.dicc)
                     self.register2json("registered.json")
                     self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
                 else:
-                    expires = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time() + float(exp_value)))
+                    expires = time.strftime('%Y-%m-%d %H:%M:%S',
+                                            time.localtime(time.time()
+                                                           + float(exp_value)))
                     self.dicc[address] = [self.client_address[0], expires]
                     self.register2json("registered.json")
                     #print(self.dicc[address][1])
                     print(self.dicc)
                     self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
-
-
             # Si no hay más líneas salimos del bucle infinito
             if not line:
                 break
 
 if __name__ == "__main__":
     serv = socketserver.UDPServer(('', int(sys.argv[1])), SIPRegisterHandler)
-    print("Lanzando servidor UDP de eco...")
+    print("Lanzando servidor...")
     serv.serve_forever()
