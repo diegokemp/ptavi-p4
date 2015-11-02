@@ -26,7 +26,7 @@ my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((IP, PUERTO))
 
 print("Enviando: \r\n" + mensaje)
-my_socket.send(bytes(mensaje, 'utf-8') + b'\r\n')
+my_socket.send(bytes(mensaje, 'utf-8'))
 data = my_socket.recv(1024)
 
 print('Recibido: \r\n' + data.decode('utf-8'))
