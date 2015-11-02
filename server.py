@@ -47,7 +47,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 if exp_value == "0":
                     try:
                         del self.dicc[address]
-                        print("-El usuario " + address + " se ha dado de baja-")
+                        print("-El user " + address + " se ha dado de baja-")
                         print(self.dicc)
                     except KeyError:
                         print("--No existe ese usuario--")
